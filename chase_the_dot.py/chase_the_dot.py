@@ -16,10 +16,10 @@ display.set_pixel(position_x, position_y, brightness_position)
 display.set_pixel(goal_x, goal_y, brightness_goal)
 
 
-while True:    
-    sleep(800)
+while True:
+    sleep(200)
     display.set_pixel(position_x, position_y, 0)
-    
+
     x = accelerometer.get_x()
     y = accelerometer.get_y()
 
@@ -47,6 +47,6 @@ while True:
                 goal_y = random.randint(min_value, max_value)
             else:
                 goal_y = 0
+        
         display.set_pixel(goal_x, goal_y, brightness_goal)
-    
     display.set_pixel(position_x, position_y, brightness_position)
