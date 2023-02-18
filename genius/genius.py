@@ -4,6 +4,7 @@ import random
 sequence = []
 input = []
 
+
 def start_game():
     while not (button_a.is_pressed() and button_b.is_pressed()):
         display.show(Image.DIAMOND)
@@ -33,7 +34,6 @@ def show_sequence():
                        '55555'))
     sleep(350)
     display.clear()
-    
     
 
 def read_input():
@@ -74,7 +74,6 @@ def show_correct_answer():
 
 
 start_game()
-
 while True:
     show_sequence()
     read_input()
