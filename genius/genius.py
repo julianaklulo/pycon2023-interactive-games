@@ -56,6 +56,12 @@ class Sequence():
     def __init__(self):
         self.sequence = []
         self.directions = [DIRECTIONS['N'], DIRECTIONS['S'], DIRECTIONS['W'], DIRECTIONS['E']]
+    
+    def __len__(self):
+        return len(self.sequence)
+
+    def __getitem__(self, key):
+        return self.sequence[key]
 
     def show(self):
         self.sequence.append(random.choice(self.directions))
