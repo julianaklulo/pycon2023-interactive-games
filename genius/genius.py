@@ -38,9 +38,10 @@ class Game():
         self.sequence.clear()
 
     def check(self):
-        if self.input.check(self.sequence.sequence):
+        if self.input.check(self.sequence):
             display.show(Image.HAPPY)
-            sleep(1000)
+            music.play(music.POWER_UP)
+            sleep(1500)
             display.clear()
             self.input.clear()
             return True
