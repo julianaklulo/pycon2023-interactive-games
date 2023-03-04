@@ -1,5 +1,14 @@
 from microbit import *
+import music
 import random
+
+
+DIRECTIONS = {
+    'N': (Image.ARROW_N, 200),
+    'S': (Image.ARROW_S, 250),
+    'W': (Image.ARROW_W, 300),
+    'E': (Image.ARROW_E, 350),
+}
 
 
 class Game():
@@ -46,14 +55,15 @@ class Game():
 class Sequence():
     def __init__(self):
         self.sequence = []
-        self.directions = [Image.ARROW_N, Image.ARROW_S, Image.ARROW_W, Image.ARROW_E]
+        self.directions = [DIRECTIONS['N'], DIRECTIONS['S'], DIRECTIONS['W'], DIRECTIONS['E']]
 
     def show(self):
         self.sequence.append(random.choice(self.directions))
 
         for direction in self.sequence:
             sleep(500)
-            display.show(direction)
+            display.show(direction[0])
+            music.pitch(direction[1], 100)
             sleep(500)
             display.clear()
         
@@ -92,19 +102,19 @@ class Input():
 
     def read(self):
         if self.button_N.is_pressed():
-            self.direction_pressed = Image.ARROW_N
+            self.direction_pressed = DIRECTIONS['N']
             sleep(200)
 
         elif self.button_S.is_pressed():
-            self.direction_pressed = Image.ARROW_S
+            self.direction_pressed = DIRECTIONS['S']
             sleep(200)
 
         elif self.button_W.is_pressed():
-            self.direction_pressed = Image.ARROW_W
+            self.direction_pressed = DIRECTIONS['W']
             sleep(200)
         
         elif self.button_E.is_pressed():
-            self.direction_pressed = Image.ARROW_E
+            self.direction_pressed = DIRECTIONS['E']
             sleep(200)
         
         else:
@@ -112,7 +122,8 @@ class Input():
 
         if self.direction_pressed:
             self.input.append(self.direction_pressed)
-            display.show(self.direction_pressed)
+            display.show(self.direction_pressed[0])
+            music.pitch(self.direction_pressed[1], 100)
             sleep(200)
             display.clear()
 
