@@ -74,10 +74,10 @@ class Sequence():
         self.sequence.append(random.choice(self.directions))
 
         for direction in self.sequence:
-            sleep(500)
+            sleep(350)
             display.show(direction[0])
             music.pitch(direction[1], 100)
-            sleep(500)
+            sleep(350)
             display.clear()
         
         display.show(Image('99999:99999:99999:99999:99999'))
@@ -149,6 +149,3 @@ class Input():
 
     def clear(self):
         self.input.clear()
-
-game = Game()
-game.run()
