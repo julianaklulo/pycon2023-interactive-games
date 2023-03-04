@@ -17,15 +17,19 @@ class Game():
         self.input = Input()
     
     def start(self):
+        display.show(Image.TARGET)
+        music.play(music.ENTERTAINER)
         while not (button_a.is_pressed() and button_b.is_pressed()):
-            display.show(Image.TARGET)
-            sleep(350)
             display.clear()
             sleep(350)
+            display.show(Image.TARGET)
+            sleep(350)
 
-        for number in ("54321"):
+        for number in ("321"):
             display.show(number)
+            music.play(music.BA_DING)
             sleep(1000)
+        music.play(music.JUMP_UP)
 
     def end(self):
         display.show(Image.SAD)
