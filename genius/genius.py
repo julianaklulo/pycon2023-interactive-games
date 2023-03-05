@@ -91,16 +91,9 @@ class Sequence():
 class Button():
     def __init__(self, pin):
         self.pin = pin
-        self.previous_state = False
     
     def is_pressed(self):
         return self.pin.read_digital() == 0
-
-    def was_pressed(self):
-        new_state = self.is_pressed()
-        was_pressed = new_state and not self.previous_state
-        self.previous_state = new_state
-        return was_pressed
 
 
 class Input():
