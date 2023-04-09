@@ -4,12 +4,25 @@ import random
 
 
 DIRECTIONS = {
-    'N': (Image.ARROW_N, 200),
-    'S': (Image.ARROW_S, 250),
-    'W': (Image.ARROW_W, 300),
-    'E': (Image.ARROW_E, 350),
+    "N": {
+        "image": Image.ARROW_N,
+        "freq": 200,
+    },
+    "S": {
+        "image": Image.ARROW_S,
+        "freq": 250,
+    },
+    "W": {
+        "image": Image.ARROW_W,
+        "freq": 300,
+    },
+    "E": {
+        "image": Image.ARROW_E,
+        "freq": 350,
+    },
 }
 
+PITCH_DURATION = 100
 
 class Game():
     def __init__(self):
@@ -75,8 +88,8 @@ class Sequence():
 
         for direction in self.sequence:
             sleep(350)
-            display.show(direction[0])
-            music.pitch(direction[1], 100)
+            display.show(direction["image"])
+            music.pitch(direction["freq"], PITCH_DURATION)
             sleep(350)
             display.clear()
         
@@ -128,8 +141,8 @@ class Input():
 
         if self.direction_pressed:
             self.input.append(self.direction_pressed)
-            display.show(self.direction_pressed[0])
-            music.pitch(self.direction_pressed[1], 100)
+            display.show(self.direction_pressed["image"])
+            music.pitch(self.direction_pressed["freq"], PITCH_DURATION)
             sleep(200)
             display.clear()
 
