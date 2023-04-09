@@ -83,10 +83,10 @@ class Player:
 
     def set_mode(self):
         if self.button.read_digital() == 0:
-            self.mode = "joystick"
-        else:
             self.mode = "accelerometer"
-    
+        else:
+            self.mode = "joystick"
+
     def update_coordinates(self):
         self.set_mode()
         if self.mode == "accelerometer":
