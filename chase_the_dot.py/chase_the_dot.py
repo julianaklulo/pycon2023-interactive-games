@@ -1,6 +1,7 @@
 from microbit import *
 import random
 import music
+import time
 
 
 DISPLAY_MIN = 0
@@ -11,7 +12,7 @@ class Game:
     def __init__(self):
         self.player = Player()
         self.dot = Dot()
-        self.playing = False
+        self.score = 0
 
     def start(self):
         display.show(Image.TARGET)
@@ -26,33 +27,37 @@ class Game:
             display.show(number)
             music.play(music.BA_DING)
             sleep(1000)
-    
-        music.play(music.JUMP_UP)
-        self.playing = True
 
-    def check_pause(self):
-        if button_a.was_pressed():
-            self.playing = False
-            sleep(150)
-        if button_b.was_pressed():
-            self.playing = True
-            sleep(150)
-    
+        music.play(music.JUMP_UP)
+        display.clear()
+
+    def end(self):
+        display.show(Image.HAPPY)
+        music.play(music.CHASE)
+        display.scroll(self.score)
+        sleep(1500)
+        self.score = 0
+        display.clear()
+
     def check_collision(self):
         if self.player.x == self.dot.x and self.player.y == self.dot.y:
+            self.score += 1
             return True
         return False
 
     def run(self):
         self.start()
-        display.clear()
-        self.player.draw()
-        self.dot.draw()
-        
+
         while True:
-            self.check_pause()
-            if self.playing:
-                sleep(200)
+            display.clear()
+            self.player.draw()
+            self.dot.draw()
+
+            start = time.ticks_ms()
+            now = time.ticks_ms()
+
+            while time.ticks_diff(now, start) < 15000:
+                sleep(150)
                 self.player.clear()
                 self.player.update_coordinates()
                 if self.check_collision():
@@ -62,7 +67,11 @@ class Game:
                         self.dot.update_coordinates()
                     self.dot.draw()
                 self.player.draw()
-    
+                now = time.ticks_ms()
+
+            self.end()
+            self.start()
+
 
 class Player:
     def __init__(self):
