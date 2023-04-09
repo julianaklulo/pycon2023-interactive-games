@@ -23,7 +23,7 @@ class Game:
             display.show(Image.TARGET)
             sleep(350)
 
-        for number in ("321"):
+        for number in "321":
             display.show(number)
             music.play(music.BA_DING)
             sleep(1000)
@@ -92,12 +92,12 @@ class Player:
         if self.mode == "accelerometer":
             accel_x = accelerometer.get_x()
             accel_y = accelerometer.get_y()
-    
+
             if accel_x > 0:
                 self.x = self.x + 1 if self.x < DISPLAY_MAX else DISPLAY_MAX
             elif accel_x < 0:
                 self.x = self.x - 1 if self.x > DISPLAY_MIN else DISPLAY_MIN
-            
+
             if accel_y > 0:
                 self.y = self.y + 1 if self.y < DISPLAY_MAX else DISPLAY_MAX
             elif accel_y < 0:
@@ -111,7 +111,7 @@ class Player:
                 self.x = self.x + 1 if self.x < DISPLAY_MAX else DISPLAY_MAX
             elif joystick_x < 400:
                 self.x = self.x - 1 if self.x > DISPLAY_MIN else DISPLAY_MIN
-                
+
             if joystick_y < 400:
                 self.y = self.y + 1 if self.y < DISPLAY_MAX else DISPLAY_MAX
             elif joystick_y > 600:
@@ -136,17 +136,21 @@ class Dot:
     def update_coordinates(self):
         self.x = random.randint(DISPLAY_MIN, DISPLAY_MAX)
         self.y = random.randint(DISPLAY_MIN, DISPLAY_MAX)
-        
+
     def flash(self):
         self.clear()
-        sleep(150)
+        sleep(50)
         self.draw()
-        sleep(150)
+        sleep(50)
         self.clear()
-        sleep(400)
+        sleep(200)
 
     def clear(self):
         display.set_pixel(self.x, self.y, 0)
 
     def draw(self):
         display.set_pixel(self.x, self.y, self.brightness)
+
+
+game = Game()
+game.run()
