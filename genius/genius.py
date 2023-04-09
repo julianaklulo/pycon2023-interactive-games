@@ -118,7 +118,6 @@ class Button:
 class Input:
     def __init__(self):
         self.input = []
-        self.direction_pressed = None
 
         self.button_N = Button(pin13)
         self.button_S = Button(pin15)
@@ -127,28 +126,28 @@ class Input:
 
     def read(self):
         if self.button_N.is_pressed():
-            self.direction_pressed = DIRECTIONS["N"]
+            direction_pressed = DIRECTIONS["N"]
             sleep(200)
 
         elif self.button_S.is_pressed():
-            self.direction_pressed = DIRECTIONS["S"]
+            direction_pressed = DIRECTIONS["S"]
             sleep(200)
 
         elif self.button_W.is_pressed():
-            self.direction_pressed = DIRECTIONS["W"]
+            direction_pressed = DIRECTIONS["W"]
             sleep(200)
 
         elif self.button_E.is_pressed():
-            self.direction_pressed = DIRECTIONS["E"]
+            direction_pressed = DIRECTIONS["E"]
             sleep(200)
 
         else:
-            self.direction_pressed = None
+            direction_pressed = None
 
-        if self.direction_pressed:
-            self.input.append(self.direction_pressed)
-            display.show(self.direction_pressed["image"])
-            music.pitch(self.direction_pressed["freq"], PITCH_DURATION)
+        if direction_pressed:
+            self.input.append(direction_pressed)
+            display.show(direction_pressed["image"])
+            music.pitch(direction_pressed["freq"], PITCH_DURATION)
             sleep(200)
             display.clear()
 
