@@ -73,49 +73,42 @@ class Game:
             self.start()
 
 
+class Input:
+    def __init__(self):
+        self.toggle_button = pin15
+        self.joystick_x = pin1
+        self.joystick_y = pin2
+
+    def get_input(self):
+        if self.toggle_button.read_digital() == 0:
+            x = accelerometer.get_x() + 512
+            y = 512 - accelerometer.get_y()
+        else:
+            x = self.joystick_x.read_analog()
+            y = self.joystick_y.read_analog()
+        return x, y
+
+
 class Player:
     def __init__(self):
         self.x = 2
         self.y = 4
         self.brightness = 5
-        self.button = pin15
-        self.mode = "accelerometer"
 
-    def set_mode(self):
-        if self.button.read_digital() == 0:
-            self.mode = "accelerometer"
-        else:
-            self.mode = "joystick"
+        self.input = Input()
 
     def update_coordinates(self):
-        self.set_mode()
-        if self.mode == "accelerometer":
-            accel_x = accelerometer.get_x()
-            accel_y = accelerometer.get_y()
+        x, y = self.input.get_input()
 
-            if accel_x > 0:
-                self.x = self.x + 1 if self.x < DISPLAY_MAX else DISPLAY_MAX
-            elif accel_x < 0:
-                self.x = self.x - 1 if self.x > DISPLAY_MIN else DISPLAY_MIN
+        if x > 600:  # right
+            self.x = self.x + 1 if self.x < DISPLAY_MAX else DISPLAY_MAX
+        elif x < 400:  # left
+            self.x = self.x - 1 if self.x > DISPLAY_MIN else DISPLAY_MIN
 
-            if accel_y > 0:
-                self.y = self.y + 1 if self.y < DISPLAY_MAX else DISPLAY_MAX
-            elif accel_y < 0:
-                self.y = self.y - 1 if self.y > DISPLAY_MIN else DISPLAY_MIN
-
-        elif self.mode == "joystick":
-            joystick_x = pin1.read_analog()
-            joystick_y = pin2.read_analog()
-
-            if joystick_x > 600:
-                self.x = self.x + 1 if self.x < DISPLAY_MAX else DISPLAY_MAX
-            elif joystick_x < 400:
-                self.x = self.x - 1 if self.x > DISPLAY_MIN else DISPLAY_MIN
-
-            if joystick_y < 400:
-                self.y = self.y + 1 if self.y < DISPLAY_MAX else DISPLAY_MAX
-            elif joystick_y > 600:
-                self.y = self.y - 1 if self.y > DISPLAY_MIN else DISPLAY_MIN
+        if y < 400:  # down
+            self.y = self.y + 1 if self.y < DISPLAY_MAX else DISPLAY_MAX
+        elif y > 600:  # up
+            self.y = self.y - 1 if self.y > DISPLAY_MIN else DISPLAY_MIN
 
     def clear(self):
         display.set_pixel(self.x, self.y, 0)
