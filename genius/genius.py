@@ -47,7 +47,7 @@ class Game():
     def end(self):
         display.show(Image.SAD)
         music.play(music.POWER_DOWN)
-        display.show(len(self.sequence) - 1)
+        display.scroll(len(self.sequence) - 1)
         sleep(1500)
         self.input.clear()
         self.sequence.clear()
