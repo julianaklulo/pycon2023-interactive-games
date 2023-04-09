@@ -24,11 +24,12 @@ DIRECTIONS = {
 
 PITCH_DURATION = 100
 
-class Game():
+
+class Game:
     def __init__(self):
         self.sequence = Sequence()
         self.input = Input()
-    
+
     def start(self):
         display.show(Image.TARGET)
         music.play(music.ENTERTAINER)
@@ -38,7 +39,7 @@ class Game():
             display.show(Image.TARGET)
             sleep(350)
 
-        for number in ("321"):
+        for number in "321":
             display.show(number)
             music.play(music.BA_DING)
             sleep(1000)
@@ -72,11 +73,16 @@ class Game():
                 self.start()
 
 
-class Sequence():
+class Sequence:
     def __init__(self):
         self.sequence = []
-        self.directions = [DIRECTIONS['N'], DIRECTIONS['S'], DIRECTIONS['W'], DIRECTIONS['E']]
-    
+        self.directions = [
+            DIRECTIONS["N"],
+            DIRECTIONS["S"],
+            DIRECTIONS["W"],
+            DIRECTIONS["E"],
+        ]
+
     def __len__(self):
         return len(self.sequence)
 
@@ -92,8 +98,8 @@ class Sequence():
             music.pitch(direction["freq"], PITCH_DURATION)
             sleep(350)
             display.clear()
-        
-        display.show(Image('99999:99999:99999:99999:99999'))
+
+        display.show(Image("99999:99999:99999:99999:99999"))
         sleep(350)
         display.clear()
 
@@ -101,19 +107,19 @@ class Sequence():
         self.sequence.clear()
 
 
-class Button():
+class Button:
     def __init__(self, pin):
         self.pin = pin
-    
+
     def is_pressed(self):
         return self.pin.read_digital() == 0
 
 
-class Input():
+class Input:
     def __init__(self):
         self.input = []
         self.direction_pressed = None
-        
+
         self.button_N = Button(pin13)
         self.button_S = Button(pin15)
         self.button_W = Button(pin12)
@@ -121,21 +127,21 @@ class Input():
 
     def read(self):
         if self.button_N.is_pressed():
-            self.direction_pressed = DIRECTIONS['N']
+            self.direction_pressed = DIRECTIONS["N"]
             sleep(200)
 
         elif self.button_S.is_pressed():
-            self.direction_pressed = DIRECTIONS['S']
+            self.direction_pressed = DIRECTIONS["S"]
             sleep(200)
 
         elif self.button_W.is_pressed():
-            self.direction_pressed = DIRECTIONS['W']
+            self.direction_pressed = DIRECTIONS["W"]
             sleep(200)
-        
+
         elif self.button_E.is_pressed():
-            self.direction_pressed = DIRECTIONS['E']
+            self.direction_pressed = DIRECTIONS["E"]
             sleep(200)
-        
+
         else:
             self.direction_pressed = None
 
@@ -149,9 +155,13 @@ class Input():
     def check(self, sequence):
         while len(self.input) < len(sequence):
             self.read()
-            if sequence[:len(self.input)] != self.input:
+            if sequence[: len(self.input)] != self.input:
                 return False
         return True
 
     def clear(self):
         self.input.clear()
+
+
+game = Game()
+game.run()
