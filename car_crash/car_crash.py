@@ -9,6 +9,9 @@ BRIGHTNESS_BORDER = 5
 BRIGHTNESS_PLAYER = 7
 BRIGHTNESS_OBSTACLE = 9
 
+MAX_REFRESH_RATE = 8
+MIN_REFRESH_RATE = 1
+
 
 class Game:
     def __init__(self):
@@ -43,7 +46,7 @@ class Game:
         self.score = 0
         self.obstacle.reset()
         self.player.reset()
-        self.screen.reset_rate()
+        self.screen.reset()
 
     def check_collision(self):
         return self.player.x == self.obstacle.x and self.player.y == self.obstacle.y
@@ -51,36 +54,34 @@ class Game:
     def run(self):
         self.start()
         
-        frame = 0
+        iteration = 0
         while True:
-            if frame >= self.screen.refresh_rate:
-                self.border.move()    
-
-                if self.obstacle.y == 4:
-                    music.play(music.POWER_UP)
-                    self.score += 1
-                    if self.score % 3:
-                        self.screen.speedup()
-
-                self.obstacle.update_coordinates()
-                frame = 0
-    
             self.player.update_coordinates()            
             self.screen.update_buffer(self.border, self.player, self.obstacle)
             self.screen.show()
-            if self.check_collision():
-                self.end()
-                self.start()
-    
-            frame += 1
-            sleep(15)
+            iteration += 1
+
+            if iteration >= self.screen.refresh:
+                if self.obstacle.y == 4: # hit bottom
+                    if self.check_collision():
+                        self.end()
+                        self.start()
+                        continue
+                    music.pitch(300, 100, wait=False)
+                    self.score += 1
+                    self.screen.speedup()
+                self.border.move()                
+                self.obstacle.update_coordinates()
+                iteration = 0
+            
+            sleep(100)
+            
             
 
 class Player:
     def __init__(self):
         self.x = 2
         self.y = 4
-        
         self.brightness = BRIGHTNESS_PLAYER
         self.joystick_x = pin1
 
@@ -131,7 +132,7 @@ class Border:
 class Screen:
     def __init__(self):
         self.buffer = "00000:00000:00000:00000:00000"
-        self.refresh_rate = 10
+        self.refresh = MAX_REFRESH_RATE
         
     def update_buffer(self, border, player, obstacle):
         border_space = ["0", "0", "0", "0", "0"]
@@ -161,12 +162,12 @@ class Screen:
     def show(self):
         display.show(Image(self.buffer))
 
-    def reset_rate(self):
-        self.refresh_rate = 10
+    def reset(self):
+        self.refresh = MAX_REFRESH_RATE
 
     def speedup(self):
-        if self.refresh_rate >= 3:
-            self.refresh_rate -= 1
+        if self.refresh >= MIN_REFRESH_RATE:
+            self.refresh -= 1
 
 game = Game()
 game.run()
