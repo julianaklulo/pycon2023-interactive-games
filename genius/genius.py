@@ -44,6 +44,7 @@ class Game:
             music.play(music.BA_DING)
             sleep(1000)
         music.play(music.JUMP_UP)
+        display.clear()
 
     def end(self):
         display.show(Image.SAD)
