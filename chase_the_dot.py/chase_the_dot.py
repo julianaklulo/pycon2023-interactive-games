@@ -7,6 +7,9 @@ import time
 DISPLAY_MIN = 0
 DISPLAY_MAX = 4
 
+BRIGHTNESS_PLAYER = 5
+BRIGHTNESS_DOT = 9
+
 
 class Game:
     def __init__(self):
@@ -47,27 +50,33 @@ class Game:
 
     def run(self):
         self.start()
-
         while True:
             display.clear()
-            self.player.draw()
-            self.dot.draw()
+            self.player.show()
+            self.dot.show()
 
             start = time.ticks_ms()
             now = time.ticks_ms()
 
-            while time.ticks_diff(now, start) < 15000:
-                sleep(150)
+            while time.ticks_diff(now, start) < 25000:
+                if time.ticks_diff(now, self.dot.time_showed) > 1000:
+                    self.dot.clear()
+                    self.dot.update_coordinates()
+                    self.dot.show()
+
                 self.player.clear()
                 self.player.update_coordinates()
+
                 if self.check_collision():
                     music.play(music.POWER_UP)
                     self.dot.flash()
                     while self.dot.x == self.player.x and self.dot.y == self.player.y:
                         self.dot.update_coordinates()
-                    self.dot.draw()
-                self.player.draw()
+                    self.dot.show()
+
+                self.player.show()
                 now = time.ticks_ms()
+                sleep(150)
 
             self.end()
             self.start()
@@ -93,7 +102,7 @@ class Player:
     def __init__(self):
         self.x = 2
         self.y = 4
-        self.brightness = 5
+        self.brightness = BRIGHTNESS_PLAYER
 
         self.input = Input()
 
@@ -113,7 +122,7 @@ class Player:
     def clear(self):
         display.set_pixel(self.x, self.y, 0)
 
-    def draw(self):
+    def show(self):
         display.set_pixel(self.x, self.y, self.brightness)
 
 
@@ -121,7 +130,8 @@ class Dot:
     def __init__(self):
         self.x = 0
         self.y = 0
-        self.brightness = 9
+        self.brightness = BRIGHTNESS_DOT
+        self.time_showed = time.ticks_ms()
 
     def get_coordinates(self):
         return (self.x, self.y)
@@ -133,7 +143,7 @@ class Dot:
     def flash(self):
         self.clear()
         sleep(50)
-        self.draw()
+        self.show()
         sleep(50)
         self.clear()
         sleep(200)
@@ -141,7 +151,8 @@ class Dot:
     def clear(self):
         display.set_pixel(self.x, self.y, 0)
 
-    def draw(self):
+    def show(self):
+        self.time_showed = time.ticks_ms()
         display.set_pixel(self.x, self.y, self.brightness)
 
 
